@@ -2,23 +2,22 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons >
           <ion-menu-button color="primary"></ion-menu-button>
         </ion-buttons>
-        <ion-title>{{ $route.params.id }}</ion-title>
+        <ion-title>Smoelenboek</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">{{ $route.params.id }}</ion-title>
+          <ion-title size="large">Smoelenboek</ion-title>
         </ion-toolbar>
       </ion-header>
 
       <div id="container">
-        <strong class="capitalize">{{ $route.params.id }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <h2>Alle vrijwilligers die in de VF werken</h2>
       </div>
     </ion-content>
   </ion-page>
@@ -30,17 +29,15 @@ import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, Io
 
 <style scoped>
 #container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+
+#container h2 {
+  font-size: 1.2rem;
+  line-height: 1.3em;
+  padding: 0.4em 0 0.5em 0.4em;
 }
 
 #container p {
@@ -50,7 +47,4 @@ import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, Io
   margin: 0;
 }
 
-#container a {
-  text-decoration: none;
-}
 </style>

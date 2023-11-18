@@ -30,3 +30,25 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+
+# chatgpt suggestions
+# Capacitor
+node_modules/
+android/
+capacitor-cordova-android-plugins/
+
+# Android
+*.iml
+.gradle/
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build/
+/captures/
+# end chatgpt suggestions
+
+# besta
+_capacitor.config.ts
+

@@ -4,11 +4,15 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: '/folder/Inbox'
+    redirect: '/Smoelenboek'
   },
   {
-    path: '/folder/:id',
-    component: () => import ('../views/FolderPage.vue')
+    path: '/Smoelenboek',
+    component: () => import ('../views/Smoelenboek.vue')
+  },
+  {
+    path: '/Kalender',
+    component: () => import ('../views/Kalender.vue')
   }
 ]
 

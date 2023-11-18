@@ -1,5 +1,7 @@
 {
   "name": "zaalwachtVFApp",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "vue-vite"
 }
