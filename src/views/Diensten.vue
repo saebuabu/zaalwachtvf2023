@@ -19,9 +19,11 @@
       <div id="container">
         <ion-list>
           <ion-item v-for="item in diensten" :key="item.StartDienst">
+            <ion-label position="floating">
+              {{ item.StartDienst }}
+            </ion-label>
             <ion-label>
-              <h3>{{ item.StartDienst }}</h3>
-              <p>{{ item.Zaalwacht }}</p>
+              {{ item.Zaalwacht }}
             </ion-label>
           </ion-item>
         </ion-list>

@@ -15,7 +15,7 @@
         </ion-toolbar>
       </ion-header>
       <div id="container">
-        <iframe src="https://calendar.google.com/calendar/embed?src=zaalwachtvf%40gmail.com&ctz=Europe%2FAmsterdam" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        <iframe src="https://calendar.google.com/calendar/embed?ctz=Europe%2FAmsterdam" style="position:fixed; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"></iframe>
       </div>
     </ion-content>
   </ion-page>
@@ -29,7 +29,7 @@ export default {
     data () {
         return  {
             diensten: [],
-        }
+           }
   },
   async created() {
   }
@@ -40,8 +40,8 @@ export default {
 #container {
   display: flex;
   flex-direction: column;
+  max-width: 100vw;
 }
-
 
 #container h2, #container h3, #container p {
   font-size: 1.0rem;
