@@ -8,7 +8,7 @@
             <ion-note>Wie, wat, wanneer?</ion-note>
 
             <ion-menu-toggle :auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item @click="selectedIndex = i" router-direction="root" :router-link="p.url" lines="none" :detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
+              <ion-item @click="navigateToPage(p.url,i)" router-direction="root" :href="p.url" lines="none" :detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
                 <ion-icon aria-hidden="true" slot="start" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
@@ -22,7 +22,7 @@
   </ion-app>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import {
   IonApp,
   IonContent,
@@ -36,33 +36,64 @@ import {
   IonRouterOutlet,
   IonSplitPane,
 } from '@ionic/vue';
-import { ref } from 'vue';
 import {
   heartOutline,
   heartSharp,
   calendarClearOutline,
   calendarClearSharp
 } from 'ionicons/icons';
+import { useRouter } from 'vue-router';
 
-const selectedIndex = ref(0);
-const appPages = [
-  {
-    title: 'Smoelenboek',
-    url: '/Smoelenboek',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
-  },
-  {
-    title: 'Kalender',
-    url: '/Kalender',
-    iosIcon: calendarClearOutline,
-    mdIcon: calendarClearSharp
-  },
-];
-
-const path = window.location.pathname.split('folder/')[1];
-if (path !== undefined) {
-  selectedIndex.value = appPages.findIndex((page) => page.title.toLowerCase() === path.toLowerCase());
+export default {
+    name : 'App',
+    components: {
+      IonApp,
+    IonContent,
+    IonIcon,
+    IonItem,
+    IonList,
+    IonListHeader,
+    IonMenu,
+    IonMenuToggle,
+    IonNote,
+    IonRouterOutlet,
+    IonSplitPane,
+    },
+    data() {
+        return {
+          selectedIndex: 0,
+      appPages: [
+            {
+              title: 'Smoelenboek',
+              url: '/Smoelenboek',
+              iosIcon: heartOutline,
+              mdIcon: heartSharp,
+            },
+            {
+              title: 'Diensten',
+              url: '/Diensten',
+              iosIcon: calendarClearOutline,
+              mdIcon: calendarClearSharp
+            },
+            {
+              title: 'Google Kalender',
+              url: '/Google',
+              iosIcon: calendarClearOutline,
+              mdIcon: calendarClearSharp
+            }],
+        }
+    },
+    methods: {
+      navigateToPage(url: string, index: number) {
+        this.selectedIndex = index;
+        console.log(url);
+      },
+    },
+    async mounted() {     
+      let path = window.location.pathname.split('/')[1];
+      path = '/' + (path === '' ? 'Smoelenboek' : path);
+      this.selectedIndex = this.appPages.findIndex((page) =>  page.url === path);
+    }
 }
 </script>
 

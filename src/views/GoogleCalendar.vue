@@ -5,26 +5,17 @@
         <ion-buttons >
           <ion-menu-button color="primary"></ion-menu-button>
         </ion-buttons>
-        <ion-title>Kalender</ion-title>
+        <ion-title>Google Calendar</ion-title>
       </ion-toolbar>
     </ion-header>
-
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">Zaalwachtvf Google kalender</ion-title>
         </ion-toolbar>
       </ion-header>
-
       <div id="container">
-        <ion-list>
-          <ion-item v-for="item in diensten" :key="item.StartDienst">
-            <ion-label>
-              <h3>{{ item.StartDienst }}</h3>
-              <p>{{ item.Zaalwacht }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <iframe src="https://calendar.google.com/calendar/embed?src=zaalwachtvf%40gmail.com&ctz=Europe%2FAmsterdam" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
       </div>
     </ion-content>
   </ion-page>
@@ -32,18 +23,15 @@
 
 <script lang="ts">
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import Service from '@/services/Service';
 
 export default {
-    name: 'Kalender',
+    name: 'GoogleCalendar',
     data () {
         return  {
             diensten: [],
         }
   },
   async created() {
-        this.diensten = await Service.getDiensten();
-        //console.log(this.diensten);
   }
 }
 </script>

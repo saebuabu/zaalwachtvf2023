@@ -11,8 +11,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/Smoelenboek.vue')
   },
   {
-    path: '/Kalender',
-    component: () => import ('../views/Kalender.vue')
+    path: '/Diensten',
+    component: () => import ('../views/Diensten.vue')
+  },
+  {
+    path: '/Google',
+    component: () => import ('../views/GoogleCalendar.vue')
   }
 ]
 
