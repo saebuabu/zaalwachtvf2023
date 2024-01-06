@@ -17,9 +17,13 @@
       </ion-header>
 
       <div id="container">
+        <ion-item>
+          <ion-icon aria-hidden="true"  :ios="mdIcon" :md="mdIcon"></ion-icon>
+          <ion-input class="zoek-veld" placeholder=" ..."    @ionInput="filterDiensten"></ion-input>
+        </ion-item>
         <ion-list>
           <ion-item v-for="item in diensten" :key="item.StartDienst">
-            <ion-label position="floating">
+            <ion-label position="inline">
               {{ item.StartDienst }}
             </ion-label>
             <ion-label>
@@ -33,18 +37,50 @@
 </template>
 
 <script lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButtons, IonIcon, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel, IonItem, IonInput } from '@ionic/vue';
 import Service from '@/services/Service';
+import {
+  searchOutline
+} from 'ionicons/icons';
 
 export default {
     name: 'Diensten',
+    components: {
+        IonButtons,
+        IonContent,
+        IonHeader,
+        IonMenuButton,
+        IonPage,
+        IonTitle,
+        IonToolbar,
+        IonLabel,
+        IonItem,
+        IonInput,
+        IonIcon
+    },
     data () {
         return  {
-            diensten: [],
+            diensten: [{StartDienst: '', Zaalwacht: ''}],
+            dienstenCache: [{StartDienst: '', Zaalwacht: ''}],
+            mdIcon: searchOutline,
         }
+  },
+  methods: {
+    filterDiensten(event: any) {
+      //reset de diensten
+      this.diensten = [...this.dienstenCache];      
+      //filter de diensten met de ingevoerde tekst
+      this.diensten = this.diensten.filter((dienst) => {
+        if (dienst.Zaalwacht == null) {
+          return false;
+        }
+        return dienst.Zaalwacht.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
+      });
+    }
   },
   async created() {
         this.diensten = await Service.getDiensten();
+        this.dienstenCache = [...this.diensten];
   }
 }
 </script>
@@ -66,6 +102,13 @@ export default {
 
 #container p {
   width: 50vw;
+}
+
+#container .zoek-veld {
+  width: 100vw;
+  background-color: #aaccaa;
+  margin: 0 0.3rem 0 0.3rem;
+  border-radius: 15px;
 }
 
 </style>
