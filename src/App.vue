@@ -35,6 +35,7 @@ import {
   IonNote,
   IonRouterOutlet,
   IonSplitPane,
+  IonLabel,
 } from '@ionic/vue';
 import {
   heartOutline,
@@ -58,6 +59,7 @@ export default {
     IonNote,
     IonRouterOutlet,
     IonSplitPane,
+    IonLabel
     },
     data() {
         return {
