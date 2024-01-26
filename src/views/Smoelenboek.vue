@@ -94,7 +94,7 @@ export default {
 <style scoped>
 ion-grid {
     --ion-grid-width: 100%;
-    --ion-grid-width-xs: 90%;
+    --ion-grid-width-xs: 100%;
     --ion-grid-width-sm: 210px;
     --ion-grid-width-md: 410px;
     --ion-grid-width-lg: 510px;
@@ -107,6 +107,12 @@ ion-grid {
     border: solid 1px #fff;
     color: darkblue;
     text-align: center;
+  }
+
+  ion-page, ion-content, div#container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
   }
 
 </style>

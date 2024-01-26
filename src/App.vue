@@ -43,12 +43,11 @@ import {
   calendarClearOutline,
   calendarClearSharp
 } from 'ionicons/icons';
-import { useRouter } from 'vue-router';
 
 export default {
     name : 'App',
     components: {
-      IonApp,
+    IonApp,
     IonContent,
     IonIcon,
     IonItem,
@@ -78,8 +77,14 @@ export default {
               mdIcon: calendarClearSharp
             },
             {
-              title: 'Google Kalender',
+              title: 'Googla Kalender',
               url: '/Google',
+              iosIcon: calendarClearOutline,
+              mdIcon: calendarClearSharp
+            },
+            {
+              title: 'Afsluiten',
+              url: '/Exit',
               iosIcon: calendarClearOutline,
               mdIcon: calendarClearSharp
             }],

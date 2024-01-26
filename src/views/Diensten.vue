@@ -23,7 +23,7 @@
         </ion-item>
         <ion-list>
           <ion-item v-for="item in diensten" :key="item.StartDienst">
-            <ion-label position="inline">
+            <ion-label>
               {{ item.StartDienst }}
             </ion-label>
             <ion-label>
