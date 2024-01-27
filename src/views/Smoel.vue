@@ -15,18 +15,7 @@
         </ion-toolbar>
       </ion-header>
       <div id="container">
-        <ion-grid :fixed="true">
-          <ion-row>
-            <ion-col v-for="smoel in smoelen" :key="smoel.title" size="6">
-              <ion-label>
-                <h3>{{ smoel.title }}</h3>
-                <a :href="`/Smoel/${smoel.slug}`">
-                <img :src="smoel.metadata.smoel.imgix_url+ '?auto=format,compress&w=200&dpr=2'" :alt="smoel.title" />
-                </a>
-              </ion-label>
-            </ion-col>
-          </ion-row>
-      </ion-grid>
+        <img  :src="smoel.metadata.smoel.url" :alt="smoel.title">
       </div>
     </ion-content>
   </ion-page>
@@ -36,9 +25,10 @@
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel } from '@ionic/vue';
 import { IonCol, IonGrid, IonRow } from '@ionic/vue';
 import Service from '@/services/Service';
+import { useRoute } from 'vue-router';
 
 export default {
-    name: 'Smoelenboek',
+    name: 'Smoel',
     components: {
         IonButtons,
         IonContent,
@@ -54,7 +44,8 @@ export default {
       },
     data () {
         return  {
-          smoelen: [
+          slug: "",
+          smoel: 
           {
               "slug": "",
               "title": "",
@@ -65,26 +56,16 @@ export default {
                       }
               }
             }
-          ],
+          ,
         }
   },
   methods: {
   },
   async created() {
+    const route = useRoute();
+    this.slug = route.params.slug as string;
      try {
-      console.log('Before fetching data');
-        this.smoelen = await Service.getSmoelenboek() as any;
-
-        //sorteer op title (naam)
-        this.smoelen.sort((a: any, b: any) => {
-          if (a.title < b.title) {
-            return -1;
-          }
-          if (a.title > b.title) {
-            return 1;
-          }
-          return 0;
-        });
+        this.smoel = await Service.getSmoel(this.slug) as any;
       } catch (error) {
         console.log(error);
       }

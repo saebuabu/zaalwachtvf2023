@@ -11,6 +11,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/Smoelenboek.vue')
   },
   {
+    path: '/Smoel/:slug',
+    component: () => import ('../views/Smoel.vue')
+  },
+  {
     path: '/Diensten',
     component: () => import ('../views/Diensten.vue')
   },
@@ -21,10 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Exit',
     component: {
-      template: '<div></div>',
-      mounted: () => {
-        window.close();
-      }
+      template: '<div>Leeg</div>'
     }
   }
 ]

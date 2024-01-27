@@ -13,7 +13,7 @@ Zaalwacht App, alleen Android, voor host medewerkers van de Verkadefabriek in De
 Testen en starten in de browser
 
 ```bash
-ionic start
+ionic serve
 ```
 
 Testen en starten in een Android device (koppel je Android via een USB kabel)

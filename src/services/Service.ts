@@ -27,6 +27,19 @@ export default {
   .depth(1);
 
   return smoelen.objects;
-  }
+  },
+  async getSmoel(slug: string) {
+    const cosmic = createBucketClient({
+      bucketSlug: 'smoelenboek-production',
+      readKey: 'grScdv437KuTMqHj1wzr2RyLNBQg4oCeyhOqOfyCd1WLJvCF6S'
+    })
+    const smoel = await cosmic.objects.findOne({
+      type: "smoelen",
+      slug: slug
+    }).props("slug,title,metadata")
+    .depth(1);
+
+    return smoel.object;
+  },  
 }
 
