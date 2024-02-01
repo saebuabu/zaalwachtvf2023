@@ -4,11 +4,11 @@ Zaalwacht App, alleen Android, voor host medewerkers van de Verkadefabriek in De
 
 ## Table of Contents
 
-- [Testen en starten](#testen)
-- [Ontwikkelen](#develop)
+- [Testen in browser](#testen-browser)
+- [Testen op android device](#testen-op-android-device)
 - [License](#license)
 
-## Testem en starten
+## Testen browser
 
 Testen en starten in de browser
 
@@ -18,7 +18,7 @@ ionic serve
 
 Testen en starten in een Android device (koppel je Android via een USB kabel)
 
-## Ontwikkelen en starten
+## Testen op android device
 
 1. **Builden en synchroniseren:**
    Zorg ervoor dat je de app opnieuw hebt gebouwd en gesynchroniseerd met Capacitor. Voer de volgende commando's uit:
