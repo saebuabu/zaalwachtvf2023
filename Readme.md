@@ -34,7 +34,7 @@ Testen en starten in een Android device (koppel je Android via een USB kabel)
    Stop de Android-app en start deze opnieuw met:
 
    ```bash
-   npm cap run android
+   npx cap run android
    ```
 
     Zorg ervoor dat je alle lopende instanties van de app op het apparaat/emulator hebt afgesloten voordat je deze opnieuw start.

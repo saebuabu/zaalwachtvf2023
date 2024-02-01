@@ -21,12 +21,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Google',
     component: () => import ('../views/GoogleCalendar.vue')
-  },
-  {
-    path: '/Exit',
-    component: {
-      template: '<div>Leeg</div>'
-    }
   }
 ]
 

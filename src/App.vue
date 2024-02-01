@@ -14,7 +14,6 @@
               </ion-item>
             </ion-menu-toggle>
           </ion-list>
-
         </ion-content>
       </ion-menu>
       <ion-router-outlet id="main-content"></ion-router-outlet>
@@ -43,9 +42,25 @@ import {
   calendarClearOutline,
   calendarClearSharp
 } from 'ionicons/icons';
+import { useBackButton} from '@ionic/vue';
+import { App } from '@capacitor/app';
+import router from './router';
 
 export default {
     name : 'App',
+    setup() {
+      
+      useBackButton(-1, () => {
+          //als de pagina url /Smoel/:slug is dan de app niet afsluiten maar naar de home pagina gaan
+          if (router.currentRoute.value.fullPath.indexOf('/Smoel/') > -1 ) 
+          {
+            router.back();
+          } else {
+            confirm('Weet je zeker dat je de app wilt afsluiten?') &&
+            App.exitApp();
+        }
+      });
+    },
     components: {
     IonApp,
     IonContent,
@@ -81,13 +96,8 @@ export default {
               url: '/Google',
               iosIcon: calendarClearOutline,
               mdIcon: calendarClearSharp
-            },
-            {
-              title: 'Afsluiten',
-              url: '/Exit',
-              iosIcon: calendarClearOutline,
-              mdIcon: calendarClearSharp
-            }],
+            }
+          ],
         }
     },
     methods: {
