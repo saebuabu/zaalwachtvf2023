@@ -40,7 +40,9 @@ import {
   heartOutline,
   heartSharp,
   calendarClearOutline,
-  calendarClearSharp
+  calendarClearSharp,
+  personOutline,
+  personSharp
 } from 'ionicons/icons';
 import { useBackButton} from '@ionic/vue';
 import { App } from '@capacitor/app';
@@ -88,11 +90,11 @@ export default {
             {
               title: 'Diensten',
               url: '/Diensten',
-              iosIcon: calendarClearOutline,
-              mdIcon: calendarClearSharp
+              iosIcon: personOutline,
+              mdIcon: personSharp
             },
             {
-              title: 'Googla Kalender',
+              title: 'Google Kalender',
               url: '/Google',
               iosIcon: calendarClearOutline,
               mdIcon: calendarClearSharp
