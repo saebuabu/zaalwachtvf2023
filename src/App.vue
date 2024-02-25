@@ -42,7 +42,9 @@ import {
   calendarClearOutline,
   calendarClearSharp,
   personOutline,
-  personSharp
+  personSharp,
+  tvOutline,
+  tvSharp,
 } from 'ionicons/icons';
 import { useBackButton} from '@ionic/vue';
 import { App } from '@capacitor/app';
@@ -98,6 +100,12 @@ export default {
               url: '/Google',
               iosIcon: calendarClearOutline,
               mdIcon: calendarClearSharp
+            },
+            {
+              title: 'VF Agenda',
+              url: '/Agenda',
+              iosIcon: tvOutline,
+              mdIcon: tvSharp
             }
           ],
         }
@@ -235,5 +243,9 @@ ion-note {
 
 ion-item.selected {
   --color: var(--ion-color-primary);
+}
+
+ion-label {
+  padding-left: 0.25rem;
 }
 </style>

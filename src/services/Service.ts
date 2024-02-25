@@ -1,26 +1,37 @@
 import axios from "axios"
 import { createBucketClient } from '@cosmicjs/sdk'
+import keys from './keys'
 
-//De basis url voor de api
-const BASE_URL = "https://itstudy.eu/zaalwacht/";
-//Het pad naar de afbeeldingen
-const APIKEY = "";
-const LANGUAGE = "nl_NL";
+const APIKEY = keys.VUE_APP_APIKEY
+const BASE_URL = keys.VUE_APP_BASE_URL
+const LANGUAGE = keys.VUE_APP_LANGUAGE
+const READKEY_COSMICJS = keys.VUE_APP_READKEY_COSMICJS
+
+// export default {
 
 export default {
   async getDiensten() {
-      return await axios.get(`${BASE_URL}diensten.php?api_key=${APIKEY}&language=${LANGUAGE}`)
-      .then(response => {
-          return response.data
-      })
-      .catch(error => {
-          console.log(error)
-      })
+    return await axios.get(`${BASE_URL}diensten.php?api_key=${APIKEY}&language=${LANGUAGE}`)
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {
+        console.log(error)
+    })
   },
- async getSmoelenboek() {
+  async getShows() {
+  return await axios.get(`${BASE_URL}agenda.php?api_key=${APIKEY}&language=${LANGUAGE}`)
+  .then(response => {
+      return response.data
+  })
+  .catch(error => {
+      console.log(error)
+  })
+},
+async getSmoelenboek() {
   const cosmic = createBucketClient({
     bucketSlug: 'smoelenboek-production',
-    readKey: 'grScdv437KuTMqHj1wzr2RyLNBQg4oCeyhOqOfyCd1WLJvCF6S'
+    readKey: READKEY_COSMICJS
   })
   const smoelen = await cosmic.objects.find({"type": "smoelen"})
   .props("slug,title,metadata")
@@ -31,7 +42,7 @@ export default {
   async getSmoel(slug: string) {
     const cosmic = createBucketClient({
       bucketSlug: 'smoelenboek-production',
-      readKey: 'grScdv437KuTMqHj1wzr2RyLNBQg4oCeyhOqOfyCd1WLJvCF6S'
+      readKey: READKEY_COSMICJS
     })
     const smoel = await cosmic.objects.findOne({
       type: "smoelen",

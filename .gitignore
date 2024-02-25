@@ -52,3 +52,5 @@ capacitor-cordova-android-plugins/
 # besta
 _capacitor.config.ts
 
+.env
+src/services/keys.ts
