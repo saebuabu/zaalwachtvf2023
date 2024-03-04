@@ -7,9 +7,25 @@
             <ion-list-header>Zaalwachten VF</ion-list-header>
             <ion-note>Wie, wat, wanneer?</ion-note>
 
-            <ion-menu-toggle :auto-hide="false" v-for="(p, i) in appPages" :key="i">
-              <ion-item @click="navigateToPage(p.url,i)" router-direction="root" :href="p.url" lines="none" :detail="false" class="hydrated" :class="{ selected: selectedIndex === i }">
-                <ion-icon aria-hidden="true" :ios="p.iosIcon" :md="p.mdIcon"></ion-icon>
+            <ion-menu-toggle
+              :auto-hide="false"
+              v-for="(p, i) in appPages"
+              :key="i"
+            >
+              <ion-item
+                @click="navigateToPage(p.url, i)"
+                router-direction="root"
+                :href="p.url"
+                lines="none"
+                :detail="false"
+                class="hydrated"
+                :class="{ selected: selectedIndex === i }"
+              >
+                <ion-icon
+                  aria-hidden="true"
+                  :ios="p.iosIcon"
+                  :md="p.mdIcon"
+                ></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
@@ -35,7 +51,7 @@ import {
   IonRouterOutlet,
   IonSplitPane,
   IonLabel,
-} from '@ionic/vue';
+} from "@ionic/vue";
 import {
   heartOutline,
   heartSharp,
@@ -45,27 +61,26 @@ import {
   personSharp,
   tvOutline,
   tvSharp,
-} from 'ionicons/icons';
-import { useBackButton} from '@ionic/vue';
-import { App } from '@capacitor/app';
-import router from './router';
+} from "ionicons/icons";
+import { useBackButton } from "@ionic/vue";
+import { App } from "@capacitor/app";
+import router from "./router";
+/* splash screen */
+import { SplashScreen } from "@capacitor/splash-screen";
 
 export default {
-    name : 'App',
-    setup() {
-      
-      useBackButton(-1, () => {
-          //als de pagina url /Smoel/:slug is dan de app niet afsluiten maar naar de home pagina gaan
-          if (router.currentRoute.value.fullPath.indexOf('/Smoel/') > -1 ) 
-          {
-            router.back();
-          } else {
-            confirm('Weet je zeker dat je de app wilt afsluiten?') &&
-            App.exitApp();
-        }
-      });
-    },
-    components: {
+  name: "App",
+  setup() {
+    useBackButton(-1, () => {
+      //als de pagina url /Smoel/:slug is dan de app niet afsluiten maar naar de home pagina gaan
+      if (router.currentRoute.value.fullPath.indexOf("/Smoel/") > -1) {
+        router.back();
+      } else {
+        confirm("Weet je zeker dat je de app wilt afsluiten?") && App.exitApp();
+      }
+    });
+  },
+  components: {
     IonApp,
     IonContent,
     IonIcon,
@@ -77,51 +92,63 @@ export default {
     IonNote,
     IonRouterOutlet,
     IonSplitPane,
-    IonLabel
-    },
-    data() {
-        return {
-          selectedIndex: 0,
+    IonLabel,
+  },
+  data() {
+    return {
+      selectedIndex: 0,
       appPages: [
-            {
-              title: 'Smoelenboek',
-              url: '/Smoelenboek',
-              iosIcon: heartOutline,
-              mdIcon: heartSharp,
-            },
-            {
-              title: 'Diensten',
-              url: '/Diensten',
-              iosIcon: personOutline,
-              mdIcon: personSharp
-            },
-            {
-              title: 'Google Kalender',
-              url: '/Google',
-              iosIcon: calendarClearOutline,
-              mdIcon: calendarClearSharp
-            },
-            {
-              title: 'VF Agenda',
-              url: '/Agenda',
-              iosIcon: tvOutline,
-              mdIcon: tvSharp
-            }
-          ],
-        }
+        {
+          title: "Smoelenboek",
+          url: "/Smoelenboek",
+          iosIcon: heartOutline,
+          mdIcon: heartSharp,
+        },
+        {
+          title: "Diensten",
+          url: "/Diensten",
+          iosIcon: personOutline,
+          mdIcon: personSharp,
+        },
+        {
+          title: "Google Kalender",
+          url: "/Google",
+          iosIcon: calendarClearOutline,
+          mdIcon: calendarClearSharp,
+        },
+        {
+          title: "VF Agenda",
+          url: "/Agenda",
+          iosIcon: tvOutline,
+          mdIcon: tvSharp,
+        },
+      ],
+    };
+  },
+  methods: {
+    navigateToPage(url: string, index: number) {
+      this.selectedIndex = index;
+      console.log(url);
     },
-    methods: {
-      navigateToPage(url: string, index: number) {
-        this.selectedIndex = index;
-        console.log(url);
-      },
+    async hideSplashScreen() {
+      // Show the splash for two seconds and then automatically hide it:
+      await SplashScreen.show({
+        showDuration: 2000,
+        autoHide: true,
+      });
     },
-    async mounted() {     
-      let path = window.location.pathname.split('/')[1];
-      path = '/' + (path === '' ? 'Smoelenboek' : path);
-      this.selectedIndex = this.appPages.findIndex((page) =>  page.url === path);
-    }
-}
+  },
+  async mounted() {
+    this.hideSplashScreen();
+
+    setTimeout(() => {
+        let path = window.location.pathname.split("/")[1];
+        path = "/" + (path === "" ? "Smoelenboek" : path);
+        this.selectedIndex = this.appPages.findIndex((page) => page.url === path);
+    }, 2100);
+
+  },
+};
 </script>
 
 <style scoped>

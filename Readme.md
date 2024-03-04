@@ -2,6 +2,10 @@
 
 Zaalwacht App, alleen Android, voor host medewerkers van de Verkadefabriek in Den Bosch met eenvoudige informatie mbt tot de diensten en een smoelenboek
 
+## Node versie
+
+   d.d. Februari 2024 ontwikkelend op node met versie 18.14.0
+
 ## Table of Contents
 
 - [Testen in browser](#testen-browser)
