@@ -32,7 +32,7 @@
           </ion-list>
         </ion-content>
       </ion-menu>
-      <ion-router-outlet id="main-content"></ion-router-outlet>
+      <ion-router-outlet v-show="aftersplash" id="main-content"></ion-router-outlet>
     </ion-split-pane>
   </ion-app>
 </template>
@@ -96,6 +96,7 @@ export default {
   },
   data() {
     return {
+      aftersplash: false,
       selectedIndex: 0,
       appPages: [
         {
@@ -128,25 +129,21 @@ export default {
   methods: {
     navigateToPage(url: string, index: number) {
       this.selectedIndex = index;
-      console.log(url);
     },
     async hideSplashScreen() {
       // Show the splash for two seconds and then automatically hide it:
       await SplashScreen.show({
-        showDuration: 2000,
+        showDuration: 1000,
         autoHide: true,
       });
+
+      setTimeout(() => {
+        this.aftersplash = true;
+      }, 1100);
     },
   },
   async mounted() {
-    this.hideSplashScreen();
-
-    setTimeout(() => {
-        let path = window.location.pathname.split("/")[1];
-        path = "/" + (path === "" ? "Smoelenboek" : path);
-        this.selectedIndex = this.appPages.findIndex((page) => page.url === path);
-    }, 2100);
-
+    this.hideSplashScreen();   
   },
 };
 </script>

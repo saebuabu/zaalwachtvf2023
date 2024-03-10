@@ -4,7 +4,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: '/Smoelenboek'
+    redirect: '/Diensten'
   },
   {
     path: '/Smoelenboek',
@@ -13,6 +13,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Smoel/:slug',
     component: () => import ('../views/Smoel.vue')
+  },
+  {
+    path: '/Voorstelling/:slug',
+    component: () => import ('../views/Voorstelling.vue')
   },
   {
     path: '/Diensten',

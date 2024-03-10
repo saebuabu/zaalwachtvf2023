@@ -21,8 +21,8 @@
           <ion-icon aria-hidden="true"  :ios="mdIcon" :md="mdIcon"></ion-icon>
           <ion-input class="zoek-veld" placeholder=" ..."    ></ion-input>
         </ion-item>
-        <ion-grid>
-          <ion-row v-for="show in shows" :key="show.id">
+        <ion-grid :fixed="true" v-for="show in shows" :key="show.id">
+          <ion-row >
               <ion-col size="2" class="dag">
                 {{ show.dag  }}
               </ion-col>
@@ -30,7 +30,7 @@
                 {{ show.tijd }}
               </ion-col>
               <ion-col size="7" class="naam">
-                {{ show.naam  }}
+                <a target="_new" :href="makeUrl(show.url)">{{ show.naam }}</a>	
               </ion-col>
               <ion-col>
                 {{ show.type  }}
@@ -78,19 +78,11 @@ export default {
         }
   },
   methods: {
-    /*
-      filterDiensten(event: any) {
-      //reset de diensten
-      this.diensten = [...this.dienstenCache];      
-      //filter de diensten met de ingevoerde tekst
-      this.diensten = this.diensten.filter((dienst) => {
-        if (dienst.Zaalwacht == null) {
-          return false;
-        }
-        return dienst.Zaalwacht.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
-      });
-    }
-    */
+      makeUrl(url: string) {
+            return url;
+            //let parts = url.split('/');
+            //return "/Voorstelling/"+ parts[parts.length-1];
+    	},
   },
   async created() {
         this.shows = await Service.getShows();
