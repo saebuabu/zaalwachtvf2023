@@ -1,48 +1,44 @@
-# Ionic zaalwacht App met vuejs 3
+# PWA, Ionic zaalwacht App met vuejs 3
 
-Zaalwacht App, alleen Android, voor host medewerkers van de Verkadefabriek in Den Bosch met eenvoudige informatie mbt tot de diensten en een smoelenboek
+PWA Zaalwacht App voor host medewerkers van de Verkadefabriek in Den Bosch met eenvoudige informatie mbt tot de diensten en een smoelenboek
+
+Web App die geinstalleerd kan worden op iedere device als PWA
 
 ## Node versie
 
    d.d. Februari 2024 ontwikkelend op node met versie 18.14.0
-
-## Table of Contents
-
-- [Testen in browser](#testen-browser)
-- [Testen op android device](#testen-op-android-device)
-- [License](#license)
 
 ## Testen browser
 
 Testen en starten in de browser
 
 ```bash
-ionic serve
+npm run dev
 ```
 
-Testen en starten in een Android device (koppel je Android via een USB kabel)
+Klaarmaken voor build en deploy op firebase
 
-## Testen op android device
+## builden en deployen via Firebase in een GCloud omgeving
 
-1. **Builden en synchroniseren:**
-   Zorg ervoor dat je de app opnieuw hebt gebouwd en gesynchroniseerd met Capacitor. Voer de volgende commando's uit:
+1. **Builden:**
 
    ```bash
    npm run build
-   npx cap sync
    ```
 
-    Hiermee wordt de app opnieuw gebouwd en de nieuwste wijzigingen gesynchroniseerd met de native projecten.
+    Hiermee wordt de dist map gedeployed naar de GCloud met firebase
 
-2. **Opnieuw opstarten:**
-   Stop de Android-app en start deze opnieuw met:
+2. **Deploy:**
+
 
    ```bash
-   npx cap run android
-   ```
+   
+   firebase login
+   
+   # na de keuze van het juiste GCloud project
 
-    Zorg ervoor dat je alle lopende instanties van de app op het apparaat/emulator hebt afgesloten voordat je deze opnieuw start.
+   firebase deploy
+   ```
 
 ## License
 
-Information about the project's license.
