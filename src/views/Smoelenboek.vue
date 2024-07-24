@@ -19,10 +19,10 @@
           <ion-row>
             <ion-col v-for="smoel in smoelen" :key="smoel.title" size="6">
               <ion-label>
-                <h3>{{ smoel.title }}</h3>
                 <a :href="`/Smoel/${smoel.slug}`">
                 <img :src="smoel.metadata.smoel.imgix_url+ '?auto=format,compress&w=200&dpr=2'" :alt="smoel.title" />
                 </a>
+                <h3>{{ smoel.title }}</h3>
               </ion-label>
             </ion-col>
           </ion-row>
@@ -105,16 +105,28 @@ ion-grid {
   }
 
   ion-col {
-    background-color: #fff;
-    border: solid 1px #fff;
+    background-color: #F58220;
+    border: solid 1px #F58220;
     color: darkblue;
     text-align: center;
   }
 
-  ion-page, ion-content, div#container {
+  ion-page, ion-grid, ion-content, div#container {
     width: 100%;
     padding: 0;
     margin: 0;
+    background-color: #F58220;
+  }
+  ion-row {
+    padding: 0;
+    margin: 0;
+    background-color: #F58220;
+  }
+  
+  ion-label  h3 {
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: bold;
   }
 
 </style>

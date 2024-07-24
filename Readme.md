@@ -18,7 +18,7 @@ npm run dev
 
 Klaarmaken voor build en deploy op firebase
 
-## builden en deployen via Firebase in een GCloud omgeving
+## Builden en deployen via Firebase in een GCloud omgeving
 
 1. **Builden:**
 
@@ -28,17 +28,20 @@ Klaarmaken voor build en deploy op firebase
 
     Hiermee wordt de dist map gedeployed naar de GCloud met firebase
 
+
 2. **Deploy:**
 
 
    ```bash
-   
+
    firebase login
    
    # na de keuze van het juiste GCloud project
 
    firebase deploy
    ```
+
+Hierna zal de PWA web app werken op `GCloudproject-naam`.web.app
 
 ## License
 
