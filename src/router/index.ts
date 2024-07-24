@@ -23,10 +23,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/Diensten.vue')
   },
   {
-    path: '/Google',
-    component: () => import ('../views/GoogleCalendar.vue')
-  },
-  {
     path: '/Agenda',
     component: () => import ('../views/Agenda.vue')
   }
