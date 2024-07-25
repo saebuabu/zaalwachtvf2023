@@ -103,8 +103,8 @@ ion-grid {
 
 .image {
   position:absolute;
-  width: 60vw;
-  margin-left:50px;
+  width: 80vw;
+  margin-left:10vw;
   margin-top:50px;
   -webkit-box-shadow: inset 10px 10px 10px 4px rgba(234, 180, 63, 0.6);
   border-radius: 8px;
