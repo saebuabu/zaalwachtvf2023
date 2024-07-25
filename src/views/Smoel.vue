@@ -15,7 +15,9 @@
         </ion-toolbar>
       </ion-header>
       <div id="container">
-        <img  :src="smoel.metadata.smoel.url" :alt="smoel.title">
+            <div class="image">
+            <img  :src="smoel.metadata.smoel.url" :alt="smoel.title">
+            </div>
       </div>
     </ion-content>
   </ion-page>
@@ -91,11 +93,24 @@ ion-grid {
     color: darkblue;
     text-align: center;
   }
+  
 
-  ion-page, ion-content, div#container {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
+  #container {
+    display: flex;
+    flex-direction: column;
+  } 
+
+
+.image {
+  position:absolute;
+  width: 60vw;
+  margin-left:50px;
+  margin-top:50px;
+  -webkit-box-shadow: inset 10px 10px 10px 4px rgba(234, 180, 63, 0.6);
+  border-radius: 8px;
+  box-shadow: inset 4px 7px 2px 5px rgba(212, 228, 68, 0.1);
+  border: 13px inset #e69f11;
+}
+
 
 </style>
