@@ -82,7 +82,10 @@ export default {
   methods: {
     getZaalwachtUrl(zw: string) {
       //take the Zaalwacht name and make it lowercase and only use the first name and remove all non-alphabetic characters
-      return zw ? "/Smoel/" + zw.toLowerCase().split(" ")[0].replace(/[^a-z]/g, "") : "?";
+      //replace é with e
+
+      return zw ? "/Smoel/" + zw.toLowerCase().split(" ")[0].replace("é", "e").replace(/[^a-z]/g, "") : "";
+  
     },
     filterDiensten(event: any) {
       //reset de diensten
