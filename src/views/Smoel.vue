@@ -100,17 +100,24 @@ ion-grid {
     flex-direction: column;
   } 
 
-
 .image {
   position:absolute;
-  width: 80vw;
-  margin-left:10vw;
+  width: 60vw;
+  margin-left: 5vw;
   margin-top:50px;
   -webkit-box-shadow: inset 10px 10px 10px 4px rgba(234, 180, 63, 0.6);
   border-radius: 8px;
   box-shadow: inset 4px 7px 2px 5px rgba(212, 228, 68, 0.1);
   border: 13px inset #e69f11;
 }
+
+@media screen and (max-width: 992px) {
+  .image {
+    width: 90vw;
+    margin-left: 5vw;
+  }
+}
+
 
 
 </style>
