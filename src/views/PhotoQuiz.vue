@@ -12,31 +12,58 @@
             <ion-header collapse="condense">
                 <ion-toolbar>
                     <ion-title size="large">Raad eens wie dit is?</ion-title>
+
                 </ion-toolbar>
             </ion-header>
             <div id="container" class="container">
                 <div v-if="currentPhoto < 10 && loaded">
-                    <div class="card mb-3">
-                        <div class="image">
-                            <img :src="photos[currentIndex].src" class="card-img-top" alt="Person Photo">
-
-                            <div class="card-body">
-                                <h5 class="card-title">Wie is dit?</h5>
-                                <div class="btn-group-vertical w-100" role="group">
-                                    <ion-button shape="round" v-for="(option, index) in shuffledOptions" :key="index"
-                                        @click="checkAnswer(option)" class="btn btn-primary mb-2">
-                                        {{ option }}
-                                    </ion-button>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="timer-wrapper" class="progress">
+                        <div id="timer" :style="dynamicStyle"></div>
                     </div>
-                    <p>Score: {{ score }}</p>
-                    <p>Vraag {{ currentPhoto + 1 }} van 10</p>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                <ion-label>
+                                    <h1>Wie is dit?</h1>
+                                    <img :src="photos[currentIndex].src" class="card-img-top" alt="Person Photo">
+                                </ion-label>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                <ion-label>
+                                    <div class="btn-group-vertical w-100" role="group">
+                                        <ion-button shape="round" v-for="(option, index) in shuffledOptions"
+                                            :key="index" @click="checkAnswer(option)" class="btn btn-primary mb-2">
+                                            {{ option }}
+                                        </ion-button>
+                                    </div>
+
+                                </ion-label>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col>
+                                <ion-label>Score: <span class="score">{{ score }}</span>, Tijd: {{ timeLeft }} seconden
+                                    <br />Vraag {{ currentPhoto + 1 }} van 10</ion-label>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
                 </div>
                 <div v-else>
-                    <h2>Je eindscore is: {{ score }} van 10</h2>
-                    <ion-button shape="round" @click="resetGame" class="btn btn-success">Opnieuw spelen</ion-button>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col>
+                                <ion-label class="finish">
+                                    <h1>Einde spel</h1><br />
+                                    <h2>Je eindscore is: {{ score }} van 10</h2>
+                                    <ion-button shape="round" @click="resetGame" class="btn btn-success">Opnieuw
+                                        spelen</ion-button>
+
+                                </ion-label>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
                 </div>
             </div>
         </ion-content>
@@ -44,9 +71,12 @@
 </template>
 
 <script lang="ts">
-import { IonButton, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonButton, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel, IonGrid, IonRow, IonCol } from '@ionic/vue';
 import Service from '@/services/Service';
 
+
+
+var tmr: number | null = null;
 
 export default {
     name: "PhotoQuiz",
@@ -58,6 +88,10 @@ export default {
         IonPage,
         IonTitle,
         IonToolbar,
+        IonLabel,
+        IonGrid,
+        IonRow,
+        IonCol
     },
 
     async created() {
@@ -70,7 +104,7 @@ export default {
             this.photos = this.smoelen.map((smoel: any) => {
                 return {
                     name: smoel.title,
-                    src: smoel.metadata.smoel.imgix_url + '?auto=format,compress&w=200&dpr=2'
+                    src: smoel.thumbnail
                 };
             });
             console.log(this.photos);
@@ -88,17 +122,14 @@ export default {
                 }
             }
 
-            //zet een timer van 5 seconden om de foto te laten zien en ga dan naar de volgende foto
-            setInterval(() => {
-                this.nextPhoto();
-            }, 4000);
-
+ 
+ 
         } catch (error) {
             console.log(error);
         }
         console.log('After fetching data');
         this.loaded = true;
-
+        this.startInterval();
     },
     data() {
         return {
@@ -109,15 +140,38 @@ export default {
             currentPhoto: 0,
             currentIndex: 0,
             options: [],
-        };
+            secondsLeft: 5,
+            seconds: 5,
+        }
     },
     computed: {
+        timeLeft() {
+            return this.secondsLeft;
+        },
         shuffledOptions() {
             return this.shuffleArray(this.options);
+        },
+        dynamicStyle(): { } {
+            return {
+                width: `${(this.secondsLeft/this.seconds) * 100}%`
+            };
         }
     },
     methods: {
-        shuffleArray(array) {
+        startInterval() {
+            if (tmr) {
+                clearInterval(tmr);
+            }
+            tmr = setInterval(() => {
+                this.secondsLeft--;
+                if (this.secondsLeft === 0) {
+                    clearInterval(tmr);
+                    this.secondsLeft = this.seconds;
+                    this.nextPhoto();
+                }
+            }, 5000);
+        },
+        shuffleArray(array: any[]) {
             let currentIndex = array.length, temporaryValue, randomIndex;
             while (0 !== currentIndex) {
                 randomIndex = Math.floor(Math.random() * currentIndex);
@@ -141,6 +195,8 @@ export default {
             if (this.currentPhoto < 9) {
                 this.currentPhoto++;
                 this.loadNewPhoto();
+                this.secondsLeft = this.seconds;
+                this.startInterval();
             } else {
                 this.currentPhoto = 10; // Stop de quiz na 10 vragen
             }
@@ -158,25 +214,21 @@ export default {
         resetGame() {
             this.score = 0;
             this.currentPhoto = 0;
+            this.secondsLeft = this.seconds;
             this.loadNewPhoto();
         }
     },
     mounted() {
-        this.loadNewPhoto();
     }
 };
 </script>
 
 <style scoped>
 .container {
-    max-width: 600px;
+    width: 100vw;
     margin: 0 auto;
 }
 
-.card-img-top {
-    max-height: 400px;
-    object-fit: cover;
-}
 
 ion-page,
 ion-grid,
@@ -189,21 +241,54 @@ div#container {
     background-color: #F58220;
 }
 
-.image {
-    position: absolute;
-    width: 25vw;
-    margin-left: 5vw;
-    margin-top: 50px;
-    -webkit-box-shadow: inset 10px 10px 10px 4px rgba(234, 180, 63, 0.6);
-    border-radius: 8px;
-    box-shadow: inset 4px 7px 2px 5px rgba(212, 228, 68, 0.1);
-    border: 13px inset #e69f11;
+#timer-wrapper {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    background-color: red;
+    margin-top: 11px;
 }
 
-@media screen and (max-width: 992px) {
-    .image {
-        width: 90vw;
-        margin-left: 5vw;
-    }
+#timer {
+    width: 100%;
+    height: 20px;
+    transition: width 5s linear;
+    background-color: green;
 }
+
+#timer.startTimer {
+    width: 0.1%;
+}
+
+/* content in a ion-col should be centered */
+ion-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+ion-label img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+ion-label img {
+    width: 70%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+
+ion-label .finish {
+    text-align: center;
+}
+
+ion-label .score {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
 </style>
