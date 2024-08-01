@@ -4,11 +4,15 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '',
-    redirect: '/Diensten'
+    redirect: '/Smoelenboek'
   },
   {
     path: '/Smoelenboek',
     component: () => import ('../views/Smoelenboek.vue')
+  },
+  {
+    path: '/Photoquiz',
+    component: () => import ('../views/Photoquiz.vue')
   },
   {
     path: '/Smoel/:slug',
@@ -21,10 +25,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Diensten',
     component: () => import ('../views/Diensten.vue')
-  },
-  {
-    path: '/Google',
-    component: () => import ('../views/GoogleCalendar.vue')
   },
   {
     path: '/Agenda',

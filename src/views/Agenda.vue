@@ -133,4 +133,10 @@ ion-label.naam {
   padding-left: 1rem;
 }
 
+ion-col a {
+  color:  #F58220;
+  text-decoration: none;
+  font-weight: 
+}
+
 </style>

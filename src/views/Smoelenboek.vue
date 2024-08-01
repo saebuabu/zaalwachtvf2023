@@ -19,10 +19,10 @@
           <ion-row>
             <ion-col v-for="smoel in smoelen" :key="smoel.title" size="6">
               <ion-label>
-                <h3>{{ smoel.title }}</h3>
                 <a :href="`/Smoel/${smoel.slug}`">
-                <img :src="smoel.metadata.smoel.imgix_url+ '?auto=format,compress&w=200&dpr=2'" :alt="smoel.title" />
+                <img :src="smoel.thumbnail" :alt="smoel.title" />
                 </a>
+                <h3>{{ smoel.title }}</h3>
               </ion-label>
             </ion-col>
           </ion-row>
@@ -30,12 +30,13 @@
       </div>
     </ion-content>
   </ion-page>
-</template>
+</template> 
 
 <script lang="ts">
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel } from '@ionic/vue';
 import { IonCol, IonGrid, IonRow } from '@ionic/vue';
 import Service from '@/services/Service';
+
 
 export default {
     name: 'Smoelenboek',
@@ -58,6 +59,7 @@ export default {
           {
               "slug": "",
               "title": "",
+              "thumbnail": "",
               "metadata": {
                       "smoel": {
                       "url": "",
@@ -105,16 +107,39 @@ ion-grid {
   }
 
   ion-col {
-    background-color: #fff;
-    border: solid 1px #fff;
+    background-color: #F58220;
+    border: solid 1px #F58220;
     color: darkblue;
     text-align: center;
   }
 
-  ion-page, ion-content, div#container {
+  ion-page, ion-grid, ion-content, div#container {
     width: 100%;
     padding: 0;
     margin: 0;
+    background-color: #F58220;
   }
+  ion-row {
+    padding: 0;
+    margin: 0;
+    background-color: #F58220;
+  }
+  
+  ion-label  h3 {
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  /* ion-label img should be 59% of the width of the ion-col and the images should be square (height = width) 
+     and have  a rounded border
+  */
+  ion-label img {
+    width: 70%;
+    height: 80%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
 
 </style>

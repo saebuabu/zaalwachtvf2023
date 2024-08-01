@@ -31,7 +31,7 @@
               {{ item.StartDienst }}
             </ion-label>
             <ion-label>
-              {{ item.Zaalwacht }}
+              <a :href="getZaalwachtUrl(item.Zaalwacht)">{{ item.Zaalwacht }}</a>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -80,6 +80,13 @@ export default {
     };
   },
   methods: {
+    getZaalwachtUrl(zw: string) {
+      //take the Zaalwacht name and make it lowercase and only use the first name and remove all non-alphabetic characters
+      //replace é with e
+
+      return zw ? "/Smoel/" + zw.toLowerCase().split(" ")[0].replace("é", "e").replace(/[^a-z]/g, "") : "";
+  
+    },
     filterDiensten(event: any) {
       //reset de diensten
       this.diensten = [...this.dienstenCache];
@@ -133,4 +140,11 @@ export default {
   margin: 0 0.3rem 0 0.3rem;
   border-radius: 15px;
 }
+
+ion-label a {
+  color:  #F58220;
+  text-decoration: none;
+  font-weight: bold;
+}
+
 </style>

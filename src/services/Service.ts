@@ -34,7 +34,7 @@ async getSmoelenboek() {
     readKey: READKEY_COSMICJS
   })
   const smoelen = await cosmic.objects.find({"type": "smoelen"})
-  .props("slug,title,metadata")
+  .props("slug,title,metadata,thumbnail")
   .depth(1);
 
   return smoelen.objects;

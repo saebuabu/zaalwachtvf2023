@@ -61,25 +61,13 @@ import {
   personSharp,
   tvOutline,
   tvSharp,
+  flaskOutline,
+  flaskSharp,
 } from "ionicons/icons";
-import { useBackButton } from "@ionic/vue";
-import { App } from "@capacitor/app";
 import router from "./router";
-/* splash screen */
-import { SplashScreen } from "@capacitor/splash-screen";
 
 export default {
   name: "App",
-  setup() {
-    useBackButton(-1, () => {
-      //als de pagina url /Smoel/:slug is dan de app niet afsluiten maar naar de home pagina gaan
-      if (router.currentRoute.value.fullPath.indexOf("/Smoel/") > -1) {
-        router.back();
-      } else {
-        confirm("Weet je zeker dat je de app wilt afsluiten?") && App.exitApp();
-      }
-    });
-  },
   components: {
     IonApp,
     IonContent,
@@ -112,17 +100,18 @@ export default {
           mdIcon: personSharp,
         },
         {
-          title: "Google Kalender",
-          url: "/Google",
-          iosIcon: calendarClearOutline,
-          mdIcon: calendarClearSharp,
-        },
-        {
           title: "VF Agenda",
           url: "/Agenda",
           iosIcon: tvOutline,
           mdIcon: tvSharp,
         },
+        {
+          title: "Wie is wie?",
+          url: "/Photoquiz",
+          iosIcon: flaskOutline,
+          mdIcon: flaskSharp,
+        },
+
       ],
     };
   },
@@ -130,20 +119,6 @@ export default {
     navigateToPage(url: string, index: number) {
       this.selectedIndex = index;
     },
-    async hideSplashScreen() {
-      // Show the splash for two seconds and then automatically hide it:
-      await SplashScreen.show({
-        showDuration: 1000,
-        autoHide: true,
-      });
-
-      setTimeout(() => {
-        this.aftersplash = true;
-      }, 1100);
-    },
-  },
-  async mounted() {
-    this.hideSplashScreen();   
   },
 };
 </script>

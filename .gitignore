@@ -54,3 +54,11 @@ _capacitor.config.ts
 
 .env
 src/services/keys.ts
+
+#firebase
+firebase.json
+.firebaserc
+.firebase
+
+
+
