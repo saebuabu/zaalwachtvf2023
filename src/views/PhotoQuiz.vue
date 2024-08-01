@@ -76,7 +76,7 @@ import Service from '@/services/Service';
 
 
 
-var tmr: number | null = null;
+var tmr: NodeJS.Timeout | null = null;
 
 export default {
     name: "PhotoQuiz",
@@ -103,8 +103,8 @@ export default {
             //zet de smoelen over naar foto's  name komt uit title en src uit metadata.smoel.imgix_url, plak aan iedere src verder  '?auto=format,compress&w=200&dpr=2'
             this.photos = this.smoelen.map((smoel: any) => {
                 return {
-                    name: smoel.title,
-                    src: smoel.thumbnail
+                    name: smoel.title || '',
+                    src: smoel.thumbnail || ''
                 };
             });
             console.log(this.photos);
@@ -134,12 +134,12 @@ export default {
     data() {
         return {
             smoelen: [],
-            photos: [],
+            photos: [] as { name: string; src: string }[], // Explicitly define the type as an array of objects with name and src properties
             loaded: false,
             score: 0,
             currentPhoto: 0,
             currentIndex: 0,
-            options: [],
+            options: [] as string[], // Explicitly define the type as an array of strings
             secondsLeft: 5,
             seconds: 5,
         }
@@ -165,7 +165,9 @@ export default {
             tmr = setInterval(() => {
                 this.secondsLeft--;
                 if (this.secondsLeft === 0) {
-                    clearInterval(tmr);
+                    if (tmr) {
+                        clearInterval(tmr);
+                    }
                     this.secondsLeft = this.seconds;
                     this.nextPhoto();
                 }
@@ -185,7 +187,7 @@ export default {
         getRandomIndex() {
             return Math.floor(Math.random() * this.photos.length);
         },
-        checkAnswer(option) {
+        checkAnswer(option: string) {
             if (option === this.photos[this.currentIndex].name) {
                 this.score++;
             }

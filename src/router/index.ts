@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/Photoquiz',
-    component: () => import ('../views/Photoquiz.vue')
+    component: () => import ('../views/PhotoQuiz.vue')
   },
   {
     path: '/Smoel/:slug',
