@@ -11,6 +11,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/Smoelenboek.vue')
   },
   {
+    path: '/Photoquiz',
+    component: () => import ('../views/Photoquiz.vue')
+  },
+  {
     path: '/Smoel/:slug',
     component: () => import ('../views/Smoel.vue')
   },

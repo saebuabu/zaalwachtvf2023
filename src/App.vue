@@ -61,6 +61,8 @@ import {
   personSharp,
   tvOutline,
   tvSharp,
+  flaskOutline,
+  flaskSharp,
 } from "ionicons/icons";
 import router from "./router";
 
@@ -103,6 +105,13 @@ export default {
           iosIcon: tvOutline,
           mdIcon: tvSharp,
         },
+        {
+          title: "Wie is wie?",
+          url: "/Photoquiz",
+          iosIcon: flaskOutline,
+          mdIcon: flaskSharp,
+        },
+
       ],
     };
   },
