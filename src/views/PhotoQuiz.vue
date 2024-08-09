@@ -149,7 +149,7 @@ export default {
             alreadyRandomized: [] as number[], // fotos niet 2x laten zien
             secondsLeft: 4,
             seconds: 4,
-            giphyResponse: null
+            giphyResponse: {data : [{embed_url: ''}]}
         }
     },
     computed: {

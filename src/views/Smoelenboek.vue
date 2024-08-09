@@ -135,8 +135,8 @@ ion-grid {
      and have  a rounded border
   */
   ion-label img {
-    width: 70%;
-    height: 80%;
+    width: 76%;
+    height: 76%;
     object-fit: cover;
     border-radius: 50%;
   }
