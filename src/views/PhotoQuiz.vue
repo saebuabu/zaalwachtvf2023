@@ -57,6 +57,11 @@
                                 <ion-label class="finish">
                                     <h1>Einde spel</h1><br />
                                     <h2>Je eindscore is: {{ score }} van 10</h2>
+                                    <hr>
+                                    <iframe width="400"  :src="giphyUrl" frameborder="0" v-if="giphyUrl"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;" style="border-radius: 10px; margin: 0.5em;"
+                                        ></iframe>
+                                    <hr>
                                     <ion-button shape="round" @click="resetGame" class="btn btn-success">Opnieuw
                                         spelen</ion-button>
 
@@ -77,6 +82,8 @@ import Service from '@/services/Service';
 
 
 var tmr: NodeJS.Timeout | null = null;
+
+const scoreTags = ['suicidal', 'alzheimer', 'braindead', 'unqualified','poor','mediocre', 'adequate','above average','you are ok','connoisseur','champion'];;
 
 export default {
     name: "PhotoQuiz",
@@ -127,7 +134,6 @@ export default {
         } catch (error) {
             console.log(error);
         }
-        console.log('After fetching data');
         this.loaded = true;
         this.startInterval();
     },
@@ -140,8 +146,10 @@ export default {
             currentPhoto: 0,
             currentIndex: 0,
             options: [] as string[], // Explicitly define the type as an array of strings
-            secondsLeft: 5,
-            seconds: 5,
+            alreadyRandomized: [] as number[], // fotos niet 2x laten zien
+            secondsLeft: 4,
+            seconds: 4,
+            giphyResponse: null
         }
     },
     computed: {
@@ -155,6 +163,9 @@ export default {
             return {
                 width: `${(this.secondsLeft/this.seconds) * 100}%`
             };
+        },
+        giphyUrl() {
+            return this.giphyResponse ? this.giphyResponse.data[0].embed_url : '';
         }
     },
     methods: {
@@ -171,7 +182,7 @@ export default {
                     this.secondsLeft = this.seconds;
                     this.nextPhoto();
                 }
-            }, 5000);
+            }, this.seconds * 1000);
         },
         shuffleArray(array: any[]) {
             let currentIndex = array.length, temporaryValue, randomIndex;
@@ -185,7 +196,12 @@ export default {
             return array;
         },
         getRandomIndex() {
-            return Math.floor(Math.random() * this.photos.length);
+            let randomIndex = Math.floor(Math.random() * this.photos.length);
+            while (this.alreadyRandomized.includes(randomIndex)) {
+                randomIndex = Math.floor(Math.random() * this.photos.length);
+                this.alreadyRandomized.push(randomIndex);
+            }
+            return randomIndex;
         },
         checkAnswer(option: string) {
             if (option === this.photos[this.currentIndex].name) {
@@ -201,6 +217,10 @@ export default {
                 this.startInterval();
             } else {
                 this.currentPhoto = 10; // Stop de quiz na 10 vragen
+                Service.getGiphyGif(scoreTags[this.score]).then((response) => {
+                    this.giphyResponse = response;
+                });
+               console.log(this.giphyResponse);
             }
         },
         loadNewPhoto() {
@@ -218,6 +238,8 @@ export default {
             this.currentPhoto = 0;
             this.secondsLeft = this.seconds;
             this.loadNewPhoto();
+            this.alreadyRandomized = [];
+            this.startInterval();
         }
     },
     mounted() {
@@ -254,7 +276,6 @@ div#container {
 #timer {
     width: 100%;
     height: 20px;
-    transition: width 5s linear;
     background-color: green;
 }
 

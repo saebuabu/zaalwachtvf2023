@@ -6,6 +6,7 @@ const APIKEY = keys.VUE_APP_APIKEY
 const BASE_URL = keys.VUE_APP_BASE_URL
 const LANGUAGE = keys.VUE_APP_LANGUAGE
 const READKEY_COSMICJS = keys.VUE_APP_READKEY_COSMICJS
+const GIPHY_API_KEY = keys.VUE_APP_GIPHY_API_KEY
 
 // export default {
 
@@ -51,6 +52,16 @@ async getSmoelenboek() {
     .depth(1);
 
     return smoel.object;
-  },  
+  },
+  //get just one GIF from Giphy API,searching by a string
+  async getGiphyGif(search: string) {
+    return await axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${search}&rating=g&limit=1`)
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {
+        console.log(error)
+    })
+  },    
 }
 
