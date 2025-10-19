@@ -63,6 +63,8 @@ import {
   tvSharp,
   flaskOutline,
   flaskSharp,
+  settingsOutline,
+  settingsSharp,
 } from "ionicons/icons";
 import router from "./router";
 
@@ -111,7 +113,12 @@ export default {
           iosIcon: flaskOutline,
           mdIcon: flaskSharp,
         },
-
+        {
+          title: "Instellingen",
+          url: "/Settings",
+          iosIcon: settingsOutline,
+          mdIcon: settingsSharp,
+        },
       ],
     };
   },
