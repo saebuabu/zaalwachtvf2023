@@ -29,6 +29,15 @@ export default {
       console.log(error)
   })
 },
+async getScrapedShows() {
+  return await axios.get(`${BASE_URL}agendascraper.php?api_key=${APIKEY}&language=${LANGUAGE}`)
+  .then(response => {
+      return response.data
+  })
+  .catch(error => {
+      console.log(error)
+  })
+},
 async getSmoelenboek() {
   const cosmic = createBucketClient({
     bucketSlug: 'smoelenboek-production',

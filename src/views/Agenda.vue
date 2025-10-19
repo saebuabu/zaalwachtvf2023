@@ -5,7 +5,7 @@
         <ion-buttons >
           <ion-menu-button color="primary"></ion-menu-button>
         </ion-buttons>
-        <ion-title>VF Agenda</ion-title>
+        <ion-title>VF Agenda (komende week)</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -17,10 +17,6 @@
       </ion-header>
 
       <div id="container">
-        <ion-item>
-          <ion-icon aria-hidden="true"  :ios="mdIcon" :md="mdIcon"></ion-icon>
-          <ion-input class="zoek-veld" placeholder=" ..."    ></ion-input>
-        </ion-item>
         <ion-grid :fixed="true" v-for="show in shows" :key="show.id">
           <ion-row >
               <ion-col size="2" class="dag">
@@ -46,11 +42,8 @@
 </template>
 
 <script lang="ts">
-import { IonButtons, IonIcon, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel, IonItem, IonInput, IonGrid, IonRow, IonCol } from '@ionic/vue';
+import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonLabel, IonGrid, IonRow, IonCol } from '@ionic/vue';
 import Service from '@/services/Service';
-import {
-  searchOutline
-} from 'ionicons/icons';
 
 export default {
     name: 'VFAgenda',
@@ -63,18 +56,13 @@ export default {
         IonTitle,
         IonToolbar,
         IonLabel,
-        IonItem,
-        IonInput,
-        IonIcon,
         IonRow,
         IonCol,
         IonGrid
     },
     data () {
         return  {
-            shows: [{'tijd': '', 'dag': '','naam': '', 'type': '','id': '', 'url': '', 'soldout': ''}],
-            //dienstenCache: [{StartDienst: '', Zaalwacht: ''}],
-            mdIcon: searchOutline,
+            shows: [{'tijd': '', 'dag': '','naam': '', 'type': '','id': '', 'url': '', 'soldout': ''}]
         }
   },
   methods: {
@@ -85,7 +73,7 @@ export default {
     	},
   },
   async created() {
-        this.shows = await Service.getShows();
+        this.shows = await Service.getScrapedShows();
         //this.dienstenCache = [...this.diensten];
   }
 }
@@ -108,13 +96,6 @@ export default {
 
 #container p {
   width: 50vw;
-}
-
-#container .zoek-veld {
-  width: 100vw;
-  background-color: #aaccaa;
-  margin: 0 0.3rem 0 0.3rem;
-  border-radius: 15px;
 }
 
 ion-label.dag {
