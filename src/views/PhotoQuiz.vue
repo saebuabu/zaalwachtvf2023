@@ -83,7 +83,7 @@ import Service from '@/services/Service';
 
 var tmr: NodeJS.Timeout | null = null;
 
-const scoreTags = ['suicidal', 'alzheimer', 'braindead', 'unqualified','poor','mediocre', 'adequate','above average','you are ok','connoisseur','champion'];;
+const scoreTags = ['go hide yourself', 'starting alzheimer', 'loser', 'unemployed','worst day of my life','mediocre', 'not yet a party','you are okay','you can be proud','champion of the world','I am God'];;
 
 export default {
     name: "PhotoQuiz",
@@ -104,6 +104,7 @@ export default {
     async created() {
         try {
             console.log('Before fetching data');
+ 
             this.smoelen = await Service.getSmoelenboek() as any;
 
             console.log(this.smoelen);
@@ -117,13 +118,12 @@ export default {
             console.log(this.photos);
 
             //geef de this.currentIndex een random nummer, maar wel tussen 0 en de lengte van de photos array
-            this.currentIndex = this.getRandomIndex();
-            console.log(this.currentIndex);
+            this.currentIndex = this.getRandomIndexNew();
 
             //vul this.options met de naam van de huidige foto en 3 andere random namen
             this.options = [this.photos[this.currentIndex].name];
             while (this.options.length < 10) {
-                let randomName = this.photos[this.getRandomIndex()].name;
+                let randomName = this.photos[this.getRandomIndexFromAll()].name;
                 if (!this.options.includes(randomName)) {
                     this.options.push(randomName);
                 }
@@ -136,6 +136,7 @@ export default {
         }
         this.loaded = true;
         this.startInterval();
+ 
     },
     data() {
         return {
@@ -195,12 +196,17 @@ export default {
             }
             return array;
         },
-        getRandomIndex() {
+        getRandomIndexFromAll() {
             let randomIndex = Math.floor(Math.random() * this.photos.length);
-            while (this.alreadyRandomized.includes(randomIndex)) {
+            return randomIndex;
+        },
+        getRandomIndexNew() {
+            let randomIndex = Math.floor(Math.random() * this.photos.length);
+            while (this.alreadyRandomized.indexOf(randomIndex) !== -1) {
                 randomIndex = Math.floor(Math.random() * this.photos.length);
-                this.alreadyRandomized.push(randomIndex);
             }
+            this.alreadyRandomized.push(randomIndex);
+            console.log(this.alreadyRandomized);
             return randomIndex;
         },
         checkAnswer(option: string) {
@@ -224,10 +230,10 @@ export default {
             }
         },
         loadNewPhoto() {
-            this.currentIndex = this.getRandomIndex();
+            this.currentIndex = this.getRandomIndexNew();
             this.options = [this.photos[this.currentIndex].name];
             while (this.options.length < 10) {
-                let randomName = this.photos[this.getRandomIndex()].name;
+                let randomName = this.photos[this.getRandomIndexFromAll()].name;
                 if (!this.options.includes(randomName)) {
                     this.options.push(randomName);
                 }
