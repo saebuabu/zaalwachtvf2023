@@ -29,6 +29,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/Agenda',
     component: () => import ('../views/Agenda.vue')
+  },
+  {
+    path: '/Settings',
+    component: () => import ('../views/Settings.vue')
   }
 ]
 

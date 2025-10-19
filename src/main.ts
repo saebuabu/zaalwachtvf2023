@@ -24,12 +24,16 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 import './registerServiceWorker';
+import { initializeNotifications } from './services/NotificationService';
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
-  
+
 router.isReady().then(() => {
   app.mount('#app');
+
+  // Initialize notification system
+  initializeNotifications();
 });
 
