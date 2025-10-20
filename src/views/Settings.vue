@@ -26,7 +26,7 @@
             <ion-label position="stacked">Je naam (zoals in de dienstenlijst)</ion-label>
             <ion-input
               v-model="userName"
-              placeholder="Bijv. John Doe"
+              placeholder="Bijv. Abu als dat je naam is..."
               @ionChange="saveUserName"
             ></ion-input>
           </ion-item>
@@ -111,7 +111,7 @@ import {
   IonIcon,
 } from "@ionic/vue";
 import { checkmarkCircle, informationCircle, closeCircle } from "ionicons/icons";
-import { scheduleDailyNotifications, checkUserShiftToday, sendShiftNotification } from "@/services/NotificationService";
+import { scheduleDailyNotifications, checkUserShiftToday, sendTestNotification } from "@/services/NotificationService";
 
 export default {
   name: "Settings",
@@ -194,19 +194,10 @@ export default {
         // Check if user has a shift today
         const notification = await checkUserShiftToday(this.userName);
 
-        if (notification.hasShift) {
-          sendShiftNotification(notification);
-        } else {
-          // Send a test notification anyway
-          new Notification("Test Notificatie", {
-            body: `Hoi ${this.userName}! Dit is een test notificatie. Je hebt vandaag geen dienst.`,
-            icon: "/img/icons/android-chrome-192x192.png",
-            badge: "/img/icons/android-chrome-192x192.png",
-            tag: "test-notification",
-          });
-        }
+        // Send test notification using the new mobile-compatible function
+        await sendTestNotification(this.userName, notification.hasShift);
       } else {
-        this.requestNotificationPermission();
+        await this.requestNotificationPermission();
       }
     },
     checkNotificationPermission() {

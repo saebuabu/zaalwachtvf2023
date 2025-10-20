@@ -67,10 +67,28 @@ export async function checkUserShiftToday(userName: string): Promise<DienstNotif
 }
 
 /**
+ * Get the service worker registration
+ * @returns Promise with service worker registration or null
+ */
+async function getServiceWorkerRegistration(): Promise<ServiceWorkerRegistration | null> {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      return registration;
+    } catch (error) {
+      console.error('Failed to get service worker registration:', error);
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
  * Send a notification to the user about their shift
+ * Uses Service Worker API for mobile compatibility
  * @param notification The notification info
  */
-export function sendShiftNotification(notification: DienstNotification): void {
+export async function sendShiftNotification(notification: DienstNotification): Promise<void> {
   if (!notification.hasShift || !notification.startDienst) {
     return;
   }
@@ -78,14 +96,90 @@ export function sendShiftNotification(notification: DienstNotification): void {
   // Extract time from "2024-10-20 start 14:00" format
   const timePart = notification.startDienst.split(' start ')[1] || '';
 
-  if (Notification.permission === 'granted') {
-    new Notification('Dienst Vandaag! 🎭', {
-      body: `Hoi ${notification.userName}! Je hebt vandaag dienst bij de Verkadefabriek om ${timePart} uur.`,
-      icon: '/img/icons/android-chrome-192x192.png',
-      badge: '/img/icons/android-chrome-192x192.png',
-      tag: 'dienst-reminder',
-      requireInteraction: true, // Keeps notification visible until user interacts
-    });
+  if (Notification.permission !== 'granted') {
+    console.log('Notification permission not granted');
+    return;
+  }
+
+  const notificationOptions: NotificationOptions & { vibrate?: number[] } = {
+    body: `Hoi ${notification.userName}! Je hebt vandaag dienst bij de Verkadefabriek om ${timePart} uur.`,
+    icon: '/img/icons/android-chrome-192x192.png',
+    badge: '/img/icons/android-chrome-192x192.png',
+    tag: 'dienst-reminder',
+    requireInteraction: true,
+    vibrate: [200, 100, 200], // Vibration pattern for mobile
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    }
+  };
+
+  try {
+    // Try to use Service Worker notification (works on mobile)
+    const registration = await getServiceWorkerRegistration();
+    if (registration) {
+      await registration.showNotification('Dienst Vandaag! 🎭', notificationOptions);
+      console.log('Notification sent via Service Worker');
+    } else {
+      // Fallback to regular notification API (desktop browsers)
+      new Notification('Dienst Vandaag! 🎭', notificationOptions);
+      console.log('Notification sent via Notification API');
+    }
+  } catch (error) {
+    console.error('Failed to send notification:', error);
+    // Try fallback
+    try {
+      new Notification('Dienst Vandaag! 🎭', notificationOptions);
+    } catch (fallbackError) {
+      console.error('Fallback notification also failed:', fallbackError);
+    }
+  }
+}
+
+/**
+ * Send a test notification
+ * @param userName The user's name
+ * @param hasShiftToday Whether the user has a shift today
+ */
+export async function sendTestNotification(userName: string, hasShiftToday: boolean): Promise<void> {
+  if (Notification.permission !== 'granted') {
+    console.log('Notification permission not granted');
+    return;
+  }
+
+  const notificationOptions: NotificationOptions & { vibrate?: number[] } = {
+    body: hasShiftToday
+      ? `Hoi ${userName}! Dit is een test. Je hebt vandaag dienst.`
+      : `Hoi ${userName}! Dit is een test notificatie. Je hebt vandaag geen dienst.`,
+    icon: '/img/icons/android-chrome-192x192.png',
+    badge: '/img/icons/android-chrome-192x192.png',
+    tag: 'test-notification',
+    vibrate: [200, 100, 200],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 2
+    }
+  };
+
+  try {
+    // Try to use Service Worker notification (works on mobile)
+    const registration = await getServiceWorkerRegistration();
+    if (registration) {
+      await registration.showNotification('Test Notificatie 📱', notificationOptions);
+      console.log('Test notification sent via Service Worker');
+    } else {
+      // Fallback to regular notification API (desktop browsers)
+      new Notification('Test Notificatie 📱', notificationOptions);
+      console.log('Test notification sent via Notification API');
+    }
+  } catch (error) {
+    console.error('Failed to send test notification:', error);
+    // Try fallback
+    try {
+      new Notification('Test Notificatie 📱', notificationOptions);
+    } catch (fallbackError) {
+      console.error('Fallback test notification also failed:', fallbackError);
+    }
   }
 }
 
@@ -133,7 +227,7 @@ async function performDailyCheck(): Promise<void> {
 
   if (notification.hasShift) {
     console.log(`Sending notification: ${userName} has a shift today`);
-    sendShiftNotification(notification);
+    await sendShiftNotification(notification);
   } else {
     console.log(`No shift today for ${userName}`);
   }
