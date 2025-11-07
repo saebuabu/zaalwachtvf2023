@@ -21,8 +21,9 @@ $MAX_PAGES = 10; // Safety limit to prevent infinite loops
 $api_key = isset($_GET['api_key']) ? $_GET['api_key'] : '';
 $language = isset($_GET['language']) ? $_GET['language'] : 'nl_NL';
 
-// Date range: today until next week (7 days from now)
+// Date range: today (start of day) until next week (7 days from now)
 $today = new DateTime();
+$today->setTime(0, 0, 0); // Set to midnight to include all events today
 $nextWeek = (new DateTime())->modify('+7 days');
 
 /**
