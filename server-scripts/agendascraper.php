@@ -249,9 +249,19 @@ function scrapeAgenda($baseUrl, $maxPages, $today, $nextWeek) {
 try {
     $events = scrapeAgenda($BASE_URL, $MAX_PAGES, $today, $nextWeek);
 
-    // Sort events by date/time
+    // Sort events by actual date/time (chronologically)
     usort($events, function($a, $b) {
-        return strcmp($a['dag'] . ' ' . $a['tijd'], $b['dag'] . ' ' . $b['tijd']);
+        // Parse each event's date to get proper chronological order
+        $dateA = parseDutchDate($a['dag'] . ' - ' . $a['tijd']);
+        $dateB = parseDutchDate($b['dag'] . ' - ' . $b['tijd']);
+
+        if (!$dateA || !$dateB) {
+            // Fallback to string comparison if parsing fails
+            return strcmp($a['dag'] . ' ' . $a['tijd'], $b['dag'] . ' ' . $b['tijd']);
+        }
+
+        // Compare timestamps for chronological order
+        return $dateA->getTimestamp() - $dateB->getTimestamp();
     });
 
     echo json_encode($events, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
