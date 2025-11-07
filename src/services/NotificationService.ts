@@ -1,5 +1,24 @@
 import Service from './Service';
 
+/**
+ * Notification System Overview:
+ *
+ * 1. IMMEDIATE CHECK ON APP OPEN:
+ *    - When user opens the app, immediately check if they have a shift today
+ *    - Send notification if they do (unless already notified today)
+ *
+ * 2. SCHEDULED 10:00 AM CHECK:
+ *    - If app stays open, check again at 10:00 AM
+ *    - Skip if user was already notified today (prevents duplicates)
+ *
+ * 3. DUPLICATE PREVENTION:
+ *    - localStorage tracks last notification date
+ *    - Only one notification sent per day, regardless of when app opens
+ *
+ * NOTE: Scheduled checks only work while app is open. For true background
+ * notifications, implement backend push notifications (see CLAUDE.md).
+ */
+
 export interface DienstNotification {
   userName: string;
   startDienst: string;
@@ -203,16 +222,17 @@ export function scheduleDailyNotifications(): void {
 
   // Schedule the first check
   setTimeout(() => {
-    performDailyCheck();
+    performDailyCheck(true); // Skip if already notified today
     // Then schedule daily checks (every 24 hours)
-    setInterval(performDailyCheck, 24 * 60 * 60 * 1000);
+    setInterval(() => performDailyCheck(true), 24 * 60 * 60 * 1000);
   }, timeUntilCheck);
 }
 
 /**
  * Perform the daily check for shifts and send notification if needed
+ * @param skipIfAlreadyNotified Whether to skip if we already notified today
  */
-async function performDailyCheck(): Promise<void> {
+async function performDailyCheck(skipIfAlreadyNotified = false): Promise<void> {
   const notificationsEnabled = localStorage.getItem('zaalwacht_notificationsEnabled') === 'true';
   const userName = localStorage.getItem('zaalwacht_userName');
 
@@ -221,13 +241,28 @@ async function performDailyCheck(): Promise<void> {
     return;
   }
 
-  console.log(`Performing daily shift check for ${userName} at 10:00`);
+  // Check if we already notified today
+  if (skipIfAlreadyNotified) {
+    const lastNotificationDate = localStorage.getItem('zaalwacht_lastNotificationDate');
+    const today = new Date().toISOString().split('T')[0];
+
+    if (lastNotificationDate === today) {
+      console.log('Already notified today, skipping check');
+      return;
+    }
+  }
+
+  console.log(`Performing daily shift check for ${userName}`);
 
   const notification = await checkUserShiftToday(userName);
 
   if (notification.hasShift) {
     console.log(`Sending notification: ${userName} has a shift today`);
     await sendShiftNotification(notification);
+
+    // Mark that we notified today
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('zaalwacht_lastNotificationDate', today);
   } else {
     console.log(`No shift today for ${userName}`);
   }
@@ -237,11 +272,17 @@ async function performDailyCheck(): Promise<void> {
  * Initialize notifications on app startup
  * This should be called in main.ts or App.vue
  */
-export function initializeNotifications(): void {
+export async function initializeNotifications(): Promise<void> {
   const notificationsEnabled = localStorage.getItem('zaalwacht_notificationsEnabled') === 'true';
 
   if (notificationsEnabled && Notification.permission === 'granted') {
-    scheduleDailyNotifications();
     console.log('Notification system initialized');
+
+    // Immediately check if user has a shift today (when app opens)
+    // Skip if we already notified today to avoid duplicates
+    await performDailyCheck(true);
+
+    // Schedule the daily 10:00 AM checks
+    scheduleDailyNotifications();
   }
 }
