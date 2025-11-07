@@ -82,7 +82,8 @@ function parseDutchDate($dateString, $referenceYear = null) {
 
                 // If the date is in the past (more than a month ago), it's probably next year
                 $now = new DateTime();
-                if ($date < $now->modify('-1 month')) {
+                $oneMonthAgo = (clone $now)->modify('-1 month');
+                if ($date < $oneMonthAgo) {
                     $date->setDate($referenceYear + 1, $month, $day);
                     $date->setTime($hour, $minute, 0);
                 }
